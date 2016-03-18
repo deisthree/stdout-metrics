@@ -1,0 +1,3 @@
+/rootfs/opt/nginx-influx/sbin/nginx-influx
+/manifests/*.tmp.yaml
+vendor/
