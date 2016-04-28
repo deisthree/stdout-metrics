@@ -2,12 +2,11 @@ SHELL = /bin/bash
 GO = go
 GOFMT = gofmt -l
 GOLINT = golint
-GOTEST = $(GO) test --cover --race -v
+GOTEST = ginkgo -r
 GOVET = $(GO) vet
 GO_FILES = $(wildcard *.go)
 GO_PACKAGES = syslogish
 GO_PACKAGES_REPO_PATH = $(addprefix $(REPO_PATH)/,$(GO_PACKAGES))
-GO_TESTABLE_PACKAGES_REPO_PATH = $(addprefix $(REPO_PATH)/,storage storage/file storage/ringbuffer)
 
 # the filepath to this repository, relative to $GOPATH/src
 REPO_PATH = github.com/deis/stdout-metrics
@@ -32,18 +31,18 @@ include versioning.mk
 
 SHELL_SCRIPTS = $(wildcard _scripts/*.sh)
 
-check-docker:
-	@if [ -z $$(which docker) ]; then \
-	  echo "Missing docker client which is required for development"; \
-	  exit 2; \
-	fi
+build: build-with-container
+push: docker-push
+install: kube-install
+uninstall: kube-delete
+upgrade: kube-update
 
 # Allow developers to step into the containerized development environment
-dev: check-docker
+dev:
 	${DEV_ENV_CMD_INT} bash
 
 # Containerized dependency resolution
-bootstrap: check-docker
+bootstrap:
 	${DEV_ENV_CMD} glide install
 
 # This is so you can build the binary without using docker
@@ -51,24 +50,24 @@ build-binary:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags ${LDFLAGS} -o $(BINARY_DEST_DIR)/stdout-metrics main.go
 
 build: build-with-container docker-build
+push: docker-push
 
 # Containerized build of the binary
-build-with-container: check-docker
+build-with-container:
 	mkdir -p ${BINARY_DEST_DIR}
 	${DEV_ENV_CMD} make build-binary
-	docker build --rm -t ${IMAGE} rootfs
+	docker build  -t ${IMAGE} rootfs
+	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 build-without-container: build-binary
 	docker build -t ${IMAGE} rootfs
 	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
-push: docker-push
-
 docker-build: build-with-container
 	docker build -t ${IMAGE} rootfs
 	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
-clean: check-docker
+clean:
 	docker rmi $(IMAGE)
 
 update-manifests:
@@ -76,7 +75,7 @@ update-manifests:
 
 test: test-style test-unit
 
-test-style: check-docker
+test-style:
 	${DEV_ENV_CMD} make style-check
 
 style-check:
@@ -95,8 +94,8 @@ kube-install: update-manifests
 	kubectl create -f manifests/deis-monitor-stdout-rc.tmp.yaml
 
 kube-delete:
-	-kubectl delete -f manifests/deis-monitor-stdout-svc.yaml
-	-kubectl delete -f manifests/deis-monitor-stdout-rc.yaml
+	kubectl delete -f manifests/deis-monitor-stdout-svc.yaml
+	kubectl delete -f manifests/deis-monitor-stdout-rc.yaml
 
 kube-update: update-manifests
 	kubectl delete -f manifests/deis-monitor-stdout-rc.tmp.yaml
