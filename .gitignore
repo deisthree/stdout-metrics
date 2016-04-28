@@ -1,3 +1,3 @@
-/rootfs/opt/nginx-influx/sbin/nginx-influx
+/rootfs/opt/stdout-metrics/sbin/stdout-metrics
 /manifests/*.tmp.yaml
 vendor/

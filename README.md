@@ -1,5 +1,5 @@
-# Nginx Pusher
-[![Build Status](https://travis-ci.org/deis/nginxpusher.svg?branch=master)](https://travis-ci.org/deis/nginxpusher) [![Go Report Card](http://goreportcard.com/badge/deis/nginxpusher)](http://goreportcard.com/report/deis/logger)
+# stdout metrics
+[![Go Report Card](http://goreportcard.com/badge/deis/stdout-metrics)](http://goreportcard.com/report/deis/stdout-metrics)
 
 Deis (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
 applications on your own servers. Deis builds on [Kubernetes](http://kubernetes.io/) to provide
