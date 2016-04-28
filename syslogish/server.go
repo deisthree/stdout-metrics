@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"regexp"
 	"strings"
-	"sync"
 )
 
 const (
@@ -15,12 +13,6 @@ const (
 	bindPort  = 1514
 	queueSize = 500
 )
-
-var appRegex *regexp.Regexp
-
-func init() {
-	appRegex = regexp.MustCompile(`^.* ([-_a-z0-9]+)\[[a-z0-9-_\.]+\].*`)
-}
 
 // Server implements a UDP-based "syslog-like" server.  Like syslog, as described by RFC 3164, it
 // expects that each packet contains a single log message and that, conversely, log messages are
@@ -30,7 +22,6 @@ type Server struct {
 	conn         net.PacketConn
 	listening    bool
 	storageQueue chan string
-	adapterMutex sync.RWMutex
 }
 
 // NewServer returns a pointer to a new Server instance.
@@ -79,18 +70,14 @@ func (s *Server) receive() {
 
 func (s *Server) parse() {
 	for message := range s.storageQueue {
-		// Strip off all the leading syslog junk and just take the JSON.
-		// Drop messages that clearly do not contain any JSON, although an open curly brace is only
-		// a soft indicator of JSON.  If the message does not contain JSON or is otherwise malformed,
-		// it may still be dropped when parsing is attempted.
 		curlyIndex := strings.Index(message, "{")
 		if curlyIndex > -1 {
 			message = message[curlyIndex:]
-			// Parse the message into json
 			var messageJSON map[string]interface{}
-			_ = json.Unmarshal([]byte(message), &messageJSON)
-			log.Printf("NGINX LOG:%+v", messageJSON)
-			s.adapterMutex.RUnlock()
+			err := json.Unmarshal([]byte(message), &messageJSON)
+			if err == nil && messageJSON["kubernetes"] != nil {
+				log.Printf("NGINX LOG:%+v\n\n", messageJSON)
+			}
 		}
 	}
 }

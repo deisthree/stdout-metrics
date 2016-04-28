@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: deis-monitor-nginxpusher
+  name: deis-monitor-stdout
   namespace: deis
   labels:
     heritage: deis
-    app: deis-monitor-nginxpusher
+    app: deis-monitor-stdout
 spec:
   ports:
   - port: 514
@@ -13,4 +13,4 @@ spec:
     targetPort: 1514
     protocol: UDP
   selector:
-    app: deis-monitor-nginxpusher
+    app: deis-monitor-stdout

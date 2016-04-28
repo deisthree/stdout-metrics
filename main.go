@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/deis/nginxpusher/syslogish"
 	"log"
 	"os"
+
+	"github.com/deis/stdout-metrics/syslogish"
 )
 
 func main() {
@@ -12,8 +13,6 @@ func main() {
 		log.Fatal("Error creating syslogish server", err)
 	}
 	syslogishServer.Listen()
-
-	log.Println("Nginx Pusher running")
 }
 
 func getopt(name, dfault string) string {
