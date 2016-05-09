@@ -18,6 +18,9 @@ spec:
       - name: deis-monitor-stdout
         image: quay.io/deis/stdout-metrics:canary
         imagePullPolicy: Always
+        env:
+        - name: "DEBUG"
+          value: "true"
         ports:
         - containerPort: 1514
           name: transport

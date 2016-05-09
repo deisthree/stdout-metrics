@@ -1,4 +1,5 @@
-package: github.com/deis/logger
+package: github.com/deis/stdout-metrics
 import:
-- package: github.com/gorilla/mux
-- package: github.com/gorilla/context
+- package: github.com/influxdata/influxdb
+  subpackages:
+  - client/v2
