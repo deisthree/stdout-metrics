@@ -1,5 +1,5 @@
-hash: 94d1ba1d8114aa8c2df7008d63c6951b965de4c4a946fa949b44577554bc4cdd
-updated: 2016-05-06T14:13:44.281601402-06:00
+hash: 575b0310a051c94a09c99d4ed2c81bcee31ad47f2879a018639c13ce6b26d968
+updated: 2016-05-10T13:37:16.782844786-06:00
 imports:
 - name: github.com/influxdata/influxdb
   version: 383332daed5595926c235f250b11433f67229c35
@@ -7,4 +7,35 @@ imports:
   - client/v2
   - models
   - pkg/escape
+- name: github.com/onsi/ginkgo
+  version: 5437a97bf824dec14e58d68c56ee36e772670c2e
+  subpackages:
+  - config
+  - internal/codelocation
+  - internal/failer
+  - internal/remote
+  - internal/suite
+  - internal/testingtproxy
+  - internal/writer
+  - reporters
+  - reporters/stenographer
+  - types
+  - internal/containernode
+  - internal/leafnodes
+  - internal/spec
+  - internal/specrunner
+- name: github.com/onsi/gomega
+  version: 7ce781ea776b2fd506491011353bded2e40c8467
+  subpackages:
+  - internal/assertion
+  - internal/asyncassertion
+  - internal/testingtsupport
+  - matchers
+  - types
+  - internal/oraclematcher
+  - format
+  - matchers/support/goraph/bipartitegraph
+  - matchers/support/goraph/edge
+  - matchers/support/goraph/node
+  - matchers/support/goraph/util
 devImports: []

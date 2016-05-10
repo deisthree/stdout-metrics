@@ -3,3 +3,5 @@ import:
 - package: github.com/influxdata/influxdb
   subpackages:
   - client/v2
+- package: github.com/onsi/gomega
+- package: github.com/onsi/ginkgo
