@@ -5,7 +5,7 @@ GOLINT = golint
 GOTEST = ginkgo -r
 GOVET = $(GO) vet
 GO_FILES = $(wildcard *.go)
-GO_PACKAGES = syslogish
+GO_PACKAGES = syslogish influx util
 GO_PACKAGES_REPO_PATH = $(addprefix $(REPO_PATH)/,$(GO_PACKAGES))
 
 # the filepath to this repository, relative to $GOPATH/src
@@ -49,23 +49,21 @@ bootstrap:
 build-binary:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags ${LDFLAGS} -o $(BINARY_DEST_DIR)/stdout-metrics main.go
 
-build: build-with-container docker-build
+build: docker-build
 push: docker-push
 
 # Containerized build of the binary
 build-with-container:
 	mkdir -p ${BINARY_DEST_DIR}
 	${DEV_ENV_CMD} make build-binary
-	docker build  -t ${IMAGE} rootfs
-	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 build-without-container: build-binary
 	docker build -t ${IMAGE} rootfs
-	docker tag ${IMAGE} ${MUTABLE_IMAGE}
+	docker tag -f ${IMAGE} ${MUTABLE_IMAGE}
 
 docker-build: build-with-container
 	docker build -t ${IMAGE} rootfs
-	docker tag ${IMAGE} ${MUTABLE_IMAGE}
+	docker tag -f ${IMAGE} ${MUTABLE_IMAGE}
 
 clean:
 	docker rmi $(IMAGE)
