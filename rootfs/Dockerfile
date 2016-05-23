@@ -1,13 +1,20 @@
-FROM alpine:3.3
+FROM quay.io/deis/base:0.2.0
 
-# add logger user
-RUN addgroup -S stdout-metrics && \
-	adduser -S -G stdout-metrics -H -h /opt/stdout-metrics -D stdout-metrics
+RUN adduser --system \
+	--shell /bin/bash \
+	--disabled-password \
+	--home /opt/stdout-metrics \
+	--group \
+	stdout-metrics
 
-ADD . /
+COPY . /
 
 # Fix some permission since we'll be running as a non-root user.
 RUN chown -R stdout-metrics:stdout-metrics /opt/stdout-metrics
+
 USER stdout-metrics
-EXPOSE 1514 8088
+
 CMD /opt/stdout-metrics/sbin/stdout-metrics
+EXPOSE 1514 8088
+
+ENV WORKFLOW_RELEASE 2.0.0
