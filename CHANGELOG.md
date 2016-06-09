@@ -1,3 +1,9 @@
+### v2.0.0-rc2 -> v2.0.0
+
+#### Documentation
+
+- [`d39fcc1`](https://github.com/deis/stdout-metrics/commit/d39fcc1a3d73f1b2d4b7d0382caec4b0513a4fcf) CHANGELOG.md: add entry for v2.0.0-rc2
+
 ### v2.0.0-rc1 -> v2.0.0-rc2
 
 ### v2.0.0-beta4
