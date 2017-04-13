@@ -59,11 +59,11 @@ build-with-container:
 
 build-without-container: build-binary
 	docker build -t ${IMAGE} rootfs
-	docker tag -f ${IMAGE} ${MUTABLE_IMAGE}
+	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 docker-build: build-with-container
 	docker build -t ${IMAGE} rootfs
-	docker tag -f ${IMAGE} ${MUTABLE_IMAGE}
+	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 clean:
 	docker rmi $(IMAGE)
