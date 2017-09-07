@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: et tw=0 sw=4 ts=4
 
-REPOROOT=${REPOROOT:=https://github.com/deis/logger}
+REPOROOT=${REPOROOT:=https://github.com/deisthree/logger}
 TYPES=${TYPES:=feat(;Features fix(;Fixes docs(;Documentation chore(;Maintenance}
 
 usage() {

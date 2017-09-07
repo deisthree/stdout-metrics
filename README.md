@@ -14,4 +14,4 @@ a lightweight, [Heroku-inspired](http://heroku.com) workflow.
 
 ![Deis Graphic](https://getdeis.blob.core.windows.net/get-deis/deis-graphic-small.png)
 
-[v2.18]: https://github.com/deis/workflow/releases/tag/v2.18.0
+[v2.18]: https://github.com/deisthree/workflow/releases/tag/v2.18.0
